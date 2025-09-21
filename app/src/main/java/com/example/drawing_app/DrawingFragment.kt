@@ -1,5 +1,6 @@
 package com.example.drawing_app
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import com.example.drawing_app.databinding.FragmentDrawingBinding
 import androidx.navigation.fragment.findNavController
+import com.github.dhaval2404.colorpicker.ColorPickerDialog
 import com.google.android.material.appbar.MaterialToolbar
 
 // TODO: Rename parameter arguments, choose names that match
@@ -30,12 +32,16 @@ class DrawingFragment : Fragment() {
     private var _binding: FragmentDrawingBinding? = null
     private val binding get() = _binding!!
 
+    var mDeafultColor = Color.BLACK
+    var drawingView: DrawingView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        drawingView = binding.drawingView
     }
 
     override fun onCreateView(
@@ -51,20 +57,14 @@ class DrawingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val toolbar = binding.topAppBar
 
-        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
+    }
 
-        val navController = findNavController()
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.homeFragment)
-        )
-
-        setupActionBarWithNavController(
-            requireActivity() as AppCompatActivity,
-            navController,
-            appBarConfiguration
-        )
+    fun openColorPicker() {
+        ColorPickerDialog
+            .Builder(requireContext())
+            .setTitle("Color Picker")
+            .setDefaultColor(mDeafultColor)
     }
 
     companion object {
